@@ -11,6 +11,23 @@
 # Install Pillow and uncomment this line to access image processing.
 from PIL import Image
 
+def checkUnchanged(figureOne, figureTwo):
+    figureOneImage = Image.open(figureOne.visualFilename)
+    figureOneLoaded = figureOneImage.load()
+    figureTwoImage = Image.open(figureTwo.visualFilename)
+    figureTwoLoaded = figureTwoImage.load()
+    flag = True
+    for i in range(0, figureOneImage.size[0]):
+        for j in range(0, figureOneImage.size[1]):
+            onePixel = figureOneLoaded[i, j]
+            twoPixel = figureTwoLoaded[i, j]
+            if(onePixel != twoPixel):
+                flag = False
+                break
+    if(flag):
+        return True
+    else : return False
+
 class Agent:
     # The default constructor for your Agent. Make sure to execute any
     # processing necessary before your Agent starts solving problems here.
@@ -43,5 +60,23 @@ class Agent:
     #
     # Make sure to return your answer *as an integer* at the end of Solve().
     # Returning your answer as a string may cause your program to crash.
+
     def Solve(self,problem):
+
+        figureA = problem.figures['A']
+        figureB = problem.figures['B']
+        figureC = problem.figures['C']
+
+
+        if(checkUnchanged(figureA,figureB)):
+            for i in range(0,6):
+                figureOption = problem.figures[str(i+1)]
+                if(checkUnchanged(figureC, figureOption)):
+                    return i+1;
+        elif (checkUnchanged(figureA,figureC)):
+            for i in range(0,6):
+                figureOption = problem.figures[str(i+1)]
+                if(checkUnchanged(figureB, figureOption)):
+                    return i+1;
+
         return -1
